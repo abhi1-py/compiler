@@ -1,0 +1,1587 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Python Compiler</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .code-input {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+        }
+
+        .execute-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .execute-btn:hover {
+            background-color: #45a049;
+        }
+
+        .output-container {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        .output-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        pre {
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Online Python Compiler</h1>
+        <form id="code-form">
+            <textarea id="code" class="code-input" rows="10" cols="50" placeholder="Enter your Python code here"></textarea><br>
+            <button type="submit" class="execute-btn">Execute</button>
+        </form>
+        <div class="output-container">
+            <div class="output-title">Output:</div>
+            <div id="output" class="output">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('code-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var code = document.getElementById('code').value;
+            var outputContainer = document.getElementById('output');
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/execute', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    outputContainer.innerHTML = '<pre>' + xhr.responseText + '</pre>';
+                } else {
+                    outputContainer.innerHTML = '<pre>Error: ' + xhr.responseText + '</pre>';
+                }
+            };
+            xhr.send('code=' + encodeURIComponent(code));
+        });
+    </script>
+</body>
+</html> -->
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Python Compiler</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/hint/show-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/hint/python-hint.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/hint/show-hint.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .code-input {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+        }
+
+        .execute-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .execute-btn:hover {
+            background-color: #45a049;
+        }
+
+        .output-container {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        .output-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        pre {
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Online Python Compiler</h1>
+        <textarea id="code" class="code-input" placeholder="Enter your Python code here"></textarea><br>
+        <button id="execute-btn" class="execute-btn">Execute</button>
+        <div class="output-container">
+            <div class="output-title">Output:</div>
+            <div id="output" class="output"></div>
+        </div>
+    </div>
+
+    <script>
+        var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+            mode: "python",
+            lineNumbers: true,
+            autofocus: true,
+            extraKeys: {"Ctrl-Space": "autocomplete"}
+        });
+
+        // Example Python function
+        var exampleFunction = `def greet(name):
+    return "Hello, " + name
+
+print(greet("World"))`;
+
+        // Set example function as default content
+        editor.setValue(exampleFunction);
+
+        document.getElementById('execute-btn').addEventListener('click', function() {
+            var code = editor.getValue();
+            var outputContainer = document.getElementById('output');
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/execute', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    outputContainer.innerHTML = '<pre>' + xhr.responseText + '</pre>';
+                } else {
+                    outputContainer.innerHTML = '<pre>Error: ' + xhr.responseText + '</pre>';
+                }
+            };
+            xhr.send('code=' + encodeURIComponent(code));
+        });
+    </script>
+</body>
+</html> -->
+
+
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Python Compiler</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/hint/show-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/hint/python-hint.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/hint/show-hint.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .code-input {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+        }
+
+        .execute-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .execute-btn:hover {
+            background-color: #45a049;
+        }
+
+        .output-container {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        .output-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        pre {
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Online Python Compiler</h1>
+        <textarea id="code" class="code-input" placeholder="Enter your Python code here">import </textarea><br>
+        <button id="execute-btn" class="execute-btn">Execute</button>
+        <div class="output-container">
+            <div class="output-title">Output:</div>
+            <div id="output" class="output"></div>
+        </div>
+    </div>
+
+    <script>
+        var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+            mode: "python",
+            lineNumbers: true,
+            autofocus: true,
+            extraKeys: {"Ctrl-Space": "autocomplete"}
+        });
+
+        document.getElementById('execute-btn').addEventListener('click', function() {
+            var code = editor.getValue();
+            var outputContainer = document.getElementById('output');
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/execute', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    outputContainer.innerHTML = '<pre>' + xhr.responseText + '</pre>';
+                } else {
+                    outputContainer.innerHTML = '<pre>Error: ' + xhr.responseText + '</pre>';
+                }
+            };
+            xhr.send('code=' + encodeURIComponent(code));
+        });
+    </script>
+</body>
+</html> -->
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Python Compiler</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/hint/show-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/hint/python-hint.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/hint/show-hint.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .code-input {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+        }
+
+        .import-input {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .execute-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .execute-btn:hover {
+            background-color: #45a049;
+        }
+
+        .output-container {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        .output-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        pre {
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Online Python Compiler</h1>
+        <input id="imports" class="import-input" type="text" placeholder="Enter modules to import (comma-separated)">
+        <textarea id="code" class="code-input" placeholder="Enter your Python code here"></textarea><br>
+        <button id="execute-btn" class="execute-btn">Execute</button>
+        <div class="output-container">
+            <div class="output-title">Output:</div>
+            <div id="output" class="output"></div>
+        </div>
+    </div>
+
+    <script>
+        var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+            mode: "python",
+            lineNumbers: true,
+            autofocus: true,
+            extraKeys: {"Ctrl-Space": "autocomplete"}
+        });
+
+        document.getElementById('execute-btn').addEventListener('click', function() {
+            var imports = document.getElementById('imports').value;
+            var code = 'import sys\n' + 'import traceback\n' + 'try:\n' + (imports ? '    ' + imports + '\n' : '') + editor.getValue() + '\n' + 'except Exception as e:\n' + '    print("Error:", e)\n' + '    traceback.print_exc(file=sys.stdout)';
+            var outputContainer = document.getElementById('output');
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/execute', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    outputContainer.innerHTML = '<pre>' + xhr.responseText + '</pre>';
+                } else {
+                    outputContainer.innerHTML = '<pre>Error: ' + xhr.responseText + '</pre>';
+                }
+            };
+            xhr.send('code=' + encodeURIComponent(code));
+        });
+    </script>
+</body>
+</html> -->
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Python Compiler</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/hint/show-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/hint/python-hint.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/hint/show-hint.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .code-input {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+        }
+
+        .execute-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .execute-btn:hover {
+            background-color: #45a049;
+        }
+
+        .output-container {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        .output-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        pre {
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Online Python Compiler</h1>
+        <textarea id="code" class="code-input" placeholder="Enter your Python code here"></textarea><br>
+        <button id="execute-btn" class="execute-btn">Execute</button>
+        <div class="output-container">
+            <div class="output-title">Output:</div>
+            <div id="output" class="output"></div>
+        </div>
+    </div>
+
+    <script>
+        var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+            mode: "python",
+            lineNumbers: true,
+            autofocus: true,
+            extraKeys: {"Ctrl-Space": "autocomplete"}
+        });
+
+        document.getElementById('execute-btn').addEventListener('click', function() {
+            var code = editor.getValue();
+            var outputContainer = document.getElementById('output');
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/execute', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    outputContainer.innerHTML = '<pre>' + xhr.responseText + '</pre>';
+                } else {
+                    outputContainer.innerHTML = '<pre>Error: ' + xhr.responseText + '</pre>';
+                }
+            };
+            xhr.send('code=' + encodeURIComponent(code));
+        });
+    </script>
+</body>
+</html> -->
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Python Compiler</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/hint/show-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/hint/python-hint.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/hint/show-hint.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .code-input {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+        }
+
+        .execute-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .execute-btn:hover {
+            background-color: #45a049;
+        }
+
+        .output-container {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        .output-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        pre {
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+
+        .comment {
+            color: #888;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Online Python Compiler</h1>
+        <textarea id="code" class="code-input" placeholder="Enter your Python code here"></textarea><br>
+        <button id="execute-btn" class="execute-btn">Execute</button>
+        <div class="output-container">
+            <div class="output-title">Output:</div>
+            <div id="output" class="output"></div>
+        </div>
+    </div>
+
+    <script>
+        var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+            mode: "python",
+            lineNumbers: true,
+            autofocus: true,
+            extraKeys: {"Ctrl-Space": "autocomplete"}
+        });
+
+        document.getElementById('execute-btn').addEventListener('click', function() {
+            var code = editor.getValue();
+            var outputContainer = document.getElementById('output');
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/execute', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    outputContainer.innerHTML = '<pre>' + xhr.responseText + '</pre>';
+                } else {
+                    outputContainer.innerHTML = '<pre>Error: ' + xhr.responseText + '</pre>';
+                }
+            };
+            xhr.send('code=' + encodeURIComponent(code));
+        });
+
+        // Function to insert comment at the current cursor position
+        function insertComment() {
+            var cursor = editor.getCursor();
+            editor.replaceRange("# ", cursor);
+        }
+
+        // Event listener for comment button
+        document.getElementById('comment-btn').addEventListener('click', function() {
+            insertComment();
+        });
+    </script>
+</body>
+</html> -->
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Python Compiler</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .code-input {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+        }
+
+        .execute-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .execute-btn:hover {
+            background-color: #45a049;
+        }
+
+        .output-container {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        .output-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        pre {
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+
+        .comment {
+            color: #888;
+            font-style: italic;
+        }
+
+        @media screen and (max-width: 600px) {
+            .container {
+                padding: 10px;
+                margin: 20px auto;
+            }
+
+            .code-input {
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Online Python Compiler</h1>
+        <textarea id="code" class="code-input" placeholder="Enter your Python code here"></textarea><br>
+        <button id="execute-btn" class="execute-btn">Execute</button>
+        <div class="output-container">
+            <div class="output-title">Output:</div>
+            <div id="output" class="output"></div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/hint/show-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/hint/python-hint.min.js"></script>
+    <script src="app.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(registration => {
+                        console.log('Service Worker registered with scope:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.error('Service Worker registration failed:', error);
+                    });
+            });
+        }
+        var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+    mode: "python",
+    lineNumbers: true,
+    autofocus: true,
+    extraKeys: {"Ctrl-Space": "autocomplete"}
+});
+
+document.getElementById('execute-btn').addEventListener('click', function() {
+    var code = editor.getValue();
+    var outputContainer = document.getElementById('output');
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/execute', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            outputContainer.innerHTML = '<pre>' + xhr.responseText + '</pre>';
+        } else {
+            outputContainer.innerHTML = '<pre>Error: ' + xhr.responseText + '</pre>';
+        }
+    };
+    xhr.send('code=' + encodeURIComponent(code));
+});
+
+// Function to insert comment at the current cursor position
+function insertComment() {
+    var cursor = editor.getCursor();
+    editor.replaceRange("# ", cursor);
+}
+
+// Event listener for comment button
+document.getElementById('comment-btn').addEventListener('click', function() {
+    insertComment();
+});
+
+    </script>
+</body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Python Compiler</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/hint/show-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/hint/python-hint.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/hint/show-hint.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            text-align: center;
+            color: #e74c3c;
+        }
+
+        .code-input {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 20px;
+            border: 1px solid #333;
+            border-radius: 5px;
+            resize: none;
+            background-color: #2e2e2e;
+            color: #e0e0e0;
+        }
+
+        .execute-btn {
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .execute-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .output-container {
+            margin-top: 20px;
+            border: 1px solid #333;
+            border-radius: 5px;
+            padding: 10px;
+            background-color: #2e2e2e;
+        }
+
+        .output-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #e74c3c;
+        }
+
+        pre {
+            padding: 10px;
+            background-color: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            color: #e0e0e0;
+        }
+
+        .comment {
+            color: #888;
+            font-style: italic;
+        }
+
+        @media screen and (max-width: 600px) {
+            .container {
+                padding: 10px;
+                margin: 20px auto;
+            }
+
+            .code-input {
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Online Python Compiler</h1>
+        <textarea id="code" class="code-input" placeholder="Enter your Python code here"></textarea><br>
+        <button id="execute-btn" class="execute-btn">Execute</button>
+        <div class="output-container">
+            <div class="output-title">Output:</div>
+            <div id="output" class="output"></div>
+        </div>
+    </div>
+
+    <script>
+        var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+            mode: "python",
+            lineNumbers: true,
+            theme: "material",
+            autofocus: true,
+            extraKeys: {"Ctrl-Space": "autocomplete"}
+        });
+
+        document.getElementById('execute-btn').addEventListener('click', function() {
+            var code = editor.getValue();
+            var outputContainer = document.getElementById('output');
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/execute', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    outputContainer.innerHTML = '<pre>' + xhr.responseText + '</pre>';
+                } else {
+                    outputContainer.innerHTML = '<pre>Error: ' + xhr.responseText + '</pre>';
+                }
+            };
+            xhr.send('code=' + encodeURIComponent(code));
+        });
+    </script>
+</body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Python Compiler</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/theme/dracula.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/hint/show-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/hint/python-hint.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/hint/show-hint.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            text-align: center;
+            color: #e74c3c;
+        }
+
+        .CodeMirror {
+            height: 200px;
+            margin-bottom: 20px;
+            border: 1px solid #333;
+            border-radius: 5px;
+            background-color: #2e2e2e;
+            color: #e0e0e0;
+        }
+
+        .execute-btn {
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .execute-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .output-container {
+            margin-top: 20px;
+            border: 1px solid #333;
+            border-radius: 5px;
+            padding: 10px;
+            background-color: #2e2e2e;
+        }
+
+        .output-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #e74c3c;
+        }
+
+        pre {
+            padding: 10px;
+            background-color: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            color: #e0e0e0;
+        }
+
+        @media screen and (max-width: 600px) {
+            .container {
+                padding: 10px;
+                margin: 20px auto;
+            }
+
+            .CodeMirror {
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Online Python Compiler</h1>
+        <textarea id="code" class="code-input" placeholder="Enter your Python code here"></textarea><br>
+        <button id="execute-btn" class="execute-btn">Execute</button>
+        <div class="output-container">
+            <div class="output-title">Output:</div>
+            <div id="output" class="output"></div>
+        </div>
+    </div>
+
+    <script>
+        var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+            mode: "python",
+            lineNumbers: true,
+            theme: "dracula",
+            autofocus: true,
+            extraKeys: {"Ctrl-Space": "autocomplete"}
+        });
+
+        document.getElementById('execute-btn').addEventListener('click', function() {
+            var code = editor.getValue();
+            var outputContainer = document.getElementById('output');
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/execute', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    outputContainer.innerHTML = '<pre>' + xhr.responseText + '</pre>';
+                } else {
+                    outputContainer.innerHTML = '<pre>Error: ' + xhr.responseText + '</pre>';
+                }
+            };
+            xhr.send('code=' + encodeURIComponent(code));
+        });
+    </script>
+</body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Python Compiler</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/hint/show-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/hint/python-hint.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/hint/show-hint.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .CodeMirror {
+            height: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .execute-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+
+        .execute-btn:hover {
+            background-color: #45a049;
+        }
+
+        .output-container {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+
+        .output-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        pre {
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+
+        .comment {
+            color: #888;
+            font-style: italic;
+        }
+
+        @media screen and (max-width: 600px) {
+            .container {
+                padding: 10px;
+                margin: 20px auto;
+            }
+
+            .CodeMirror {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Python Compiler</h1>
+        <textarea id="code" class="code-input" placeholder="Enter your Python code here"></textarea><br>
+        <button id="execute-btn" class="execute-btn">Execute</button>
+        <div class="output-container">
+            <div class="output-title">Output:</div>
+            <div id="output" class="output"></div>
+        </div>
+    </div>
+
+    <script>
+        var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+            mode: "python",
+            lineNumbers: true,
+            autofocus: true,
+            extraKeys: {"Ctrl-Space": "autocomplete"}
+        });
+
+        document.getElementById('execute-btn').addEventListener('click', function() {
+            var code = editor.getValue();
+            var outputContainer = document.getElementById('output');
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/execute', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    outputContainer.innerHTML = '<pre>' + response.output + '</pre>';
+                } else {
+                    outputContainer.innerHTML = '<pre>Error: ' + xhr.responseText + '</pre>';
+                }
+            };
+            xhr.send('code=' + encodeURIComponent(code));
+        });
+    </script>
+</body>
+</html>
+ -->
+
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Online Python Compiler</title>
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/hint/show-hint.min.css">
+     <style>
+         body {
+             font-family: Arial, sans-serif;
+             margin: 0;
+             padding: 0;
+             display: flex;
+             justify-content: center;
+             align-items: center;
+             min-height: 100vh;
+             background-color: #f0f0f0;
+         }
+ 
+         .container {
+             width: 90%;
+             max-width: 800px;
+             margin: 20px;
+             padding: 20px;
+             background-color: #fff;
+             border-radius: 8px;
+             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+         }
+ 
+         h1 {
+             text-align: center;
+             color: #333;
+         }
+ 
+         .code-input {
+             width: 100%;
+             height: 200px;
+             margin-bottom: 20px;
+             border: 1px solid #ccc;
+             border-radius: 5px;
+         }
+ 
+         .execute-btn {
+             width: 100%;
+             background-color: #4CAF50;
+             color: white;
+             padding: 10px;
+             border: none;
+             border-radius: 4px;
+             cursor: pointer;
+             font-size: 16px;
+         }
+ 
+         .execute-btn:hover {
+             background-color: #45a049;
+         }
+ 
+         .output-container {
+             margin-top: 20px;
+             border: 1px solid #ccc;
+             border-radius: 5px;
+             padding: 10px;
+             background-color: #f9f9f9;
+         }
+ 
+         .output-title {
+             font-weight: bold;
+             margin-bottom: 5px;
+         }
+ 
+         pre {
+             padding: 10px;
+             background-color: #f0f0f0;
+             border: 1px solid #ccc;
+             border-radius: 5px;
+             white-space: pre-wrap;
+             word-break: break-word;
+         }
+     </style>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/mode/python/python.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/hint/show-hint.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/hint/python-hint.min.js"></script>
+ </head>
+ <body>
+     <div class="container">
+         <h1>Online Python Compiler</h1>
+         <textarea id="code" class="code-input" placeholder="Enter your Python code here"></textarea>
+         <button id="execute-btn" class="execute-btn">Execute</button>
+         <div class="output-container">
+             <div class="output-title">Output:</div>
+             <div id="output" class="output"></div>
+         </div>
+     </div>
+ 
+     <script>
+         var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+             mode: "python",
+             lineNumbers: true,
+             autofocus: true,
+             extraKeys: {"Ctrl-Space": "autocomplete"}
+         });
+ 
+         document.getElementById('execute-btn').addEventListener('click', function() {
+             var code = editor.getValue();
+             var outputContainer = document.getElementById('output');
+             var xhr = new XMLHttpRequest();
+             xhr.open('POST', '/execute', true);
+             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+             xhr.onload = function() {
+                 if (xhr.status === 200) {
+                     outputContainer.innerHTML = '<pre>' + JSON.parse(xhr.responseText).output + '</pre>';
+                 } else {
+                     outputContainer.innerHTML = '<pre>Error: ' + xhr.responseText + '</pre>';
+                 }
+             };
+             xhr.send('code=' + encodeURIComponent(code));
+         });
+ 
+         // Function to insert comment at the current cursor position
+         function insertComment() {
+             var cursor = editor.getCursor();
+             editor.replaceRange("# ", cursor);
+         }
+ 
+         // Event listener for comment button
+         document.getElementById('comment-btn').addEventListener('click', function() {
+             insertComment();
+         });
+     </script>
+ </body>
+ </html>
+ 
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Python Compiler</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/hint/show-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/hint/python-hint.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/hint/show-hint.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .code-input {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+        }
+
+        .execute-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .execute-btn:hover {
+            background-color: #45a049;
+        }
+
+        .output-container {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        .output-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        pre {
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+
+        .comment {
+            color: #888;
+            font-style: italic;
+        }
+
+        @media screen and (max-width: 600px) {
+            .container {
+                padding: 10px;
+                margin: 20px auto;
+            }
+
+            .code-input {
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Python Compiler</h1>
+        <textarea id="code" class="code-input" placeholder="Enter your Python code here"></textarea><br>
+        <button id="execute-btn" class="execute-btn">Execute</button>
+        <div class="output-container">
+            <div class="output-title">Output:</div>
+            <div id="output" class="output"></div>
+        </div>
+    </div>
+
+    <script>
+        var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+            mode: "python",
+            lineNumbers: true,
+            autofocus: true,
+            extraKeys: {"Ctrl-Space": "autocomplete"}
+        });
+
+        document.getElementById('execute-btn').addEventListener('click', function() {
+            var code = editor.getValue();
+            var outputContainer = document.getElementById('output');
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/execute', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    outputContainer.innerHTML = '<pre>' + xhr.responseText + '</pre>';
+                } else {
+                    outputContainer.innerHTML = '<pre>Error: ' + xhr.responseText + '</pre>';
+                }
+            };
+            xhr.send('code=' + encodeURIComponent(code));
+        });
+
+        // Function to insert comment at the current cursor position
+        function insertComment() {
+            var cursor = editor.getCursor();
+            editor.replaceRange("# ", cursor);
+        }
+
+        // Event listener for comment button
+        document.getElementById('comment-btn').addEventListener('click', function() {
+            insertComment();
+        });
+    </script>
+</body>
+</html> -->
+
+
